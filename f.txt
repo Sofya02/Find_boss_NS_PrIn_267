@@ -1,0 +1,134 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream> //библиотека для ввода/вывода 
+#include <fstream> //для работы с файлами 
+#include <string> //для работы getline
+#include <list>
+#include <exception>
+#include <clocale>
+#include "tinyxml2.h"
+#include "xmlReader.h"
+#include <tchar.h>
+
+//#include "xmlReader.cpp"
+using namespace std;
+using namespace tinyxml2;
+
+
+int main(int argc, char* argv[])
+{
+    setlocale(LC_ALL, "Russian");
+    XMLDocument doc;
+    doc.LoadFile("tree.xml");
+    if (doc.ErrorID() != 0) {
+        cout << "read xml error!" << endl;
+        return 0;
+    }
+    //Получение значения id из txt-файла
+    fstream file;
+    int id_txt;
+    //открываем файл в режиме чтения
+    file.open("id.txt");
+    //если открытие файла прошло корректно, то
+    if (file)
+    {
+        //цикл для чтения значений из файла; выполнение цикла прервется,
+        //когда достигнем конца файла, в этом случае F.eof() вернет истину.
+        while (!file.eof())
+        {
+            //чтение очередного значения из потока F в переменную a
+            file >> id_txt;
+            //вывод значения переменной id_txt на экран
+            cout << "id_txt " << id_txt << endl;
+        }
+        //закрытие потока
+        file.close();
+    }
+    else
+    {
+        cout << "read txt error!" << endl;
+        return 0;
+    }
+
+    //Получение значения id
+    int id;//идентификационный номер сотрудника из xml файла
+    XMLElement* attributeApproachId = doc.FirstChildElement()->FirstChildElement("Person");
+    attributeApproachId->QueryIntAttribute("id", &id);
+    cout << "id  " << id << endl;
+
+
+    //Поиск совпадения идентификационного номера
+    if (id_txt==id)
+    {
+        cout << "Поиск начальников(вставить функцию)" << endl;
+    }
+    else
+    {
+        cout << "Error: no matches found" << endl;
+        return 0;
+    }
+
+   
+
+    
+
+
+
+    
+ 
+    //Поиск сотрудника на рабочем месте
+    int absent;
+    XMLElement* attributeApproachElement3 = doc.FirstChildElement()->FirstChildElement("Person");
+    attributeApproachElement3->QueryIntAttribute("absent", &absent);
+    cout << "absent  " << absent << endl;
+
+    if (absent == 1)
+    {
+        cout << "Error: absent" << endl;
+        return 0;
+    }
+    else
+    {
+        //Поиск начальников
+        XMLElement* titleElement = doc.FirstChildElement("Department")->FirstChildElement("Person");
+        XMLText* textNode = titleElement->FirstChild()->ToText();
+        const char* title = textNode->Value();
+        cout << "Peson " << title << endl;
+    }
+
+    //Получение значения head
+    int head;
+    XMLElement* attributeApproachHead = doc.FirstChildElement("Department");
+    attributeApproachHead->QueryIntAttribute("head", &head);
+    cout << "head  " << head << endl;
+
+    //Поиск начальника отдела 
+    //Если head==id то начальник найден : вывод его ФИО.
+    //Если нет, то вывод сообщения "Error: boss not found" и выход из программы
+    if (head == id)
+    {
+        //Будущая функция возвращения ФИО сотрудника
+        XMLElement* titleElement = doc.FirstChildElement("Department")->FirstChildElement("Person");
+        XMLText* textNode = titleElement->FirstChild()->ToText();
+        const char*  title = textNode->Value();
+        cout << "Peson " << title << endl;
+    }
+    else
+    {
+        cout << "Error: boss not found" << endl;
+        return 0;
+    }
+
+    ///////ПЕРЕХОД К СЛЕДУЮЩЕМУ СОТРУДНИКУ В ТЕКУЩЕМ ОТДЕЛЕ
+    ///////////ПОИСК ВЫШЕСТОЯЩЕГО ОТДЕЛА, В КОТОРОМ РАСПОЛОЖЕН ТЕКУЩИЙ ОТДЕЛ
+    
+    ///////ПОИСК В ГЛУБИНУ ИЛИ ШИРИНУ
+
+
+
+
+
+
+
+
+}
+
