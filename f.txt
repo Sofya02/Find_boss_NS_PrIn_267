@@ -57,9 +57,9 @@ int main(int argc, char* argv[])
 
 
     //Поиск совпадения идентификационного номера
-    if (id_txt==id)
+    if (id_txt ==id)
     {
-        cout << "Поиск начальников(вставить функцию)" << endl;
+        cout << "Поиск начальников(вставить функцию: поиска сотрудника на рабочем месте)" << endl;
     }
     else
     {
@@ -68,13 +68,6 @@ int main(int argc, char* argv[])
     }
 
    
-
-    
-
-
-
-    
- 
     //Поиск сотрудника на рабочем месте
     int absent;
     XMLElement* attributeApproachElement3 = doc.FirstChildElement()->FirstChildElement("Person");
@@ -89,6 +82,7 @@ int main(int argc, char* argv[])
     else
     {
         //Поиск начальников
+        //Возвращение ФИО сотрудника
         XMLElement* titleElement = doc.FirstChildElement("Department")->FirstChildElement("Person");
         XMLText* textNode = titleElement->FirstChild()->ToText();
         const char* title = textNode->Value();
@@ -119,16 +113,18 @@ int main(int argc, char* argv[])
     }
 
     ///////ПЕРЕХОД К СЛЕДУЮЩЕМУ СОТРУДНИКУ В ТЕКУЩЕМ ОТДЕЛЕ
+    
+
     ///////////ПОИСК ВЫШЕСТОЯЩЕГО ОТДЕЛА, В КОТОРОМ РАСПОЛОЖЕН ТЕКУЩИЙ ОТДЕЛ
     
+
     ///////ПОИСК В ГЛУБИНУ ИЛИ ШИРИНУ
 
 
 
+    /////Проход по сотрудникам текущего отдела
 
-
-
-
+     /////Проход по отделам, для которых текущий отдел является дочерним
 
 }
 
